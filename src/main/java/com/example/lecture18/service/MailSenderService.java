@@ -2,12 +2,13 @@ package com.example.lecture18.service;
 
 import com.example.lecture18.documents.Message;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.NestedRuntimeException;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MailSenderService {
+public class MailSenderService{
     private final MailSenderServiceProps mailSender;
 
     @Autowired

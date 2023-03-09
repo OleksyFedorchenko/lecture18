@@ -1,43 +1,28 @@
 package com.example.lecture18.service;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.stereotype.Service;
 
 import java.util.Properties;
 
 
-@Configuration
-@PropertySource("classpath:mailproperties.env")
+@Service
 public class MailSenderServiceProps {
-    @Value("${spring.mail.host}")
-    private String host;
-    @Value("${spring.mail.port}")
-    private int port;
-    @Value("${spring.mail.properties.mail.smtp.auth}")
-    private boolean auth;
-    @Value("${spring.mail.properties.mail.smtp.starttls.enable}")
-    private boolean starttls;
-    @Value("${spring.mail.username}")
-    private String username;
-    @Value("${spring.mail.password}")
-    private String password;
 
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 
-        mailSender.setHost(host);
-        mailSender.setPort(port);
+        mailSender.setHost(System.getenv("spring.mail.host"));
+        mailSender.setPort(Integer.parseInt(System.getenv("spring.mail.port")));
 
-        mailSender.setUsername(username);
-        mailSender.setPassword(password);
+        mailSender.setUsername(System.getenv("spring.mail.username"));
+        mailSender.setPassword(System.getenv("spring.mail.password"));
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
-        props.put("mail.smtp.auth", auth);
-        props.put("mail.smtp.starttls.enable", starttls);
+        props.put("mail.smtp.auth", System.getenv("spring.mail.properties.mail.smtp.auth"));
+        props.put("mail.smtp.starttls.enable", System.getenv("spring.mail.properties.mail.smtp.starttls.enable"));
         props.put("mail.debug", "false");
 
         return mailSender;
